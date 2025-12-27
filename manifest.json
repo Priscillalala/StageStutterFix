@@ -1,0 +1,10 @@
+{
+	"name": "MusicManager",
+	"version_number": "1.1.0",
+	"website_url": "https://github.com/Priscillalala/MusicSwapper",
+	"description": "Choose which music tracks play on each stage + some other music-related config options. Includes a few changes by default!",
+	"dependencies": [
+		"bbepis-BepInExPack-5.4.2121",
+		"RiskofThunder-HookGenPatcher-1.2.9"
+	]
+}
