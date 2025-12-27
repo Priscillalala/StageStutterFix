@@ -1,11 +1,8 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HG.Reflection;
-using RoR2;
-using RoR2.ContentManagement;
 using System.Security;
 using System.Security.Permissions;
-using Path = System.IO.Path;
 
 #pragma warning disable CS0618 // Type or member is obsolete
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
@@ -23,14 +20,27 @@ public class StageStutterFixPlugin : BaseUnityPlugin
         NAME = "StageStutterFix",
         VERSION = "1.0.0";
 
+    public static StageStutterFixPlugin Instance { get; private set; }
     public static new ManualLogSource Logger { get; private set; }
-    public static string RuntimeDirectory { get; private set; }
+    public static long PreloadBudgetPerFrame { get; private set; }
 
     private void Awake()
     {
+        Instance = this;
         Logger = base.Logger;
-        RuntimeDirectory = Path.GetDirectoryName(Info.Location);
-
-        PreloadFixer.Init();
+        PreloadBudgetPerFrame = Config.Bind(
+            "Stage Stutter Fix", 
+            "Max preload time per frame", 
+            1L, 
+            "The ideal maximum time per frame (in milliseconds) to spend preloading the next stage. A value of zero or less will disable stage preloading"
+            ).Value;
+        if (PreloadBudgetPerFrame > 0)
+        {
+            BetterPreloadPatch.Init();
+        }
+        else
+        {
+            NoPreloadPatch.Init();
+        }
     }
 }
