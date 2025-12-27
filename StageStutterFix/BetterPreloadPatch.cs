@@ -64,7 +64,6 @@ public static class BetterPreloadPatch
 
     private static void StartBetterScenePreload(string sceneCachedName, bool preserveSceneInMenus)
     {
-        StageStutterFixPlugin.Logger.LogWarning($"Attempt scene preload: {sceneCachedName} with preserveSceneInMenus = {preserveSceneInMenus}");
         if (allScenePreloadData.Exists(x => x.sceneName == sceneCachedName))
         {
             return;
@@ -83,21 +82,16 @@ public static class BetterPreloadPatch
     private static IEnumerator DoScenePreloadCoroutine(NewScenePreloadData scenePreloadData)
     {
         var preloadLocations = scenePreloadData.locationsHandle.WaitForCompletion();
-        StageStutterFixPlugin.Logger.LogWarning($"preloading {preloadLocations.Count} resource locations");
         Stopwatch frameStopwatch = new();
         frameStopwatch.Start();
-        int preloadsThisFrame = 0;
         for (int i = 0; i < preloadLocations.Count; i++)
         {
             if (frameStopwatch.ElapsedMilliseconds >= StageStutterFixPlugin.PreloadBudgetPerFrame)
             {
-                StageStutterFixPlugin.Logger.LogMessage($"did {preloadsThisFrame} preloads in {frameStopwatch.ElapsedMilliseconds}ms");
                 yield return null;
-                preloadsThisFrame = 0;
                 frameStopwatch.Restart();
             }
             scenePreloadData.assetHandles.Add(Addressables.LoadAssetAsync<Object>(preloadLocations[i]));
-            preloadsThisFrame++;
         }
 
         scenePreloadData.ReleaseLocations();
@@ -122,7 +116,6 @@ public static class BetterPreloadPatch
             NewScenePreloadData scenePreloadData = allScenePreloadData[i];
             if (!isMenuScene || !scenePreloadData.preserveInMenuScenes)
             {
-                StageStutterFixPlugin.Logger.LogMessage($"Unload scene preload: {scenePreloadData.sceneName}");
                 scenePreloadData.ReleaseAssets();
                 scenePreloadData.ReleaseLocations();
                 if (scenePreloadData.preloadAssetsCoroutine != null)
