@@ -1,8 +1,8 @@
 {
 	"name": "StageStutterFix",
 	"version_number": "1.0.0",
-	"website_url": "https://github.com/Priscillalala/MusicSwapper",
-	"description": "Choose which music tracks play on each stage + some other music-related config options. Includes a few changes by default!",
+	"website_url": "https://github.com/Priscillalala/StageStutterFix",
+	"description": "Fixes* the stutter when using the Teleporter or a portal to leave the stage (if you know you know)",
 	"dependencies": [
 		"bbepis-BepInExPack-5.4.2121"
 	]

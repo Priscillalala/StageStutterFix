@@ -31,8 +31,8 @@ public class StageStutterFixPlugin : BaseUnityPlugin
         PreloadBudgetPerFrame = Config.Bind(
             "Stage Stutter Fix",
             "Max preload time per frame",
-            2L,
-            "The ideal maximum time per frame (in milliseconds) to spend preloading the next stage. Lower this value to reduce stuttering from stage preloading. A value of zero or less will disable stage preloading"
+            1L,
+            "The ideal maximum time per frame (in milliseconds) to spend preloading the next stage. A value of zero or less will disable stage preloading"
             ).Value;
         if (PreloadBudgetPerFrame > 0)
         {
